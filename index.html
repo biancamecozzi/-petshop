@@ -1,1 +1,946 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PetMatch 🐾 – Tu tienda personalizada para mascotas</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde: #4A7C59;
+    --verde-claro: #6FAE82;
+    --arena: #F5EDD6;
+    --arena-oscura: #EAD9B8;
+    --coral: #E07A5F;
+    --marron: #2C1810;
+    --marron-suave: #5C3D2E;
+    --blanco: #FFFFFF;
+    --gris: #7A7A7A;
+    --radio: 18px;
+  }
 
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--arena);
+    color: var(--marron);
+    min-height: 100vh;
+  }
+
+  /* ─── NAVBAR ─── */
+  nav {
+    background: var(--blanco);
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 12px rgba(44,24,16,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--verde);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo span { color: var(--coral); }
+
+  .nav-links {
+    display: flex;
+    gap: 8px;
+    list-style: none;
+  }
+
+  .nav-links button {
+    background: none;
+    border: 2px solid transparent;
+    padding: 7px 18px;
+    border-radius: 30px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    color: var(--marron-suave);
+    transition: all 0.2s;
+  }
+
+  .nav-links button:hover,
+  .nav-links button.active {
+    background: var(--verde);
+    color: var(--blanco);
+    border-color: var(--verde);
+  }
+
+  .cart-btn {
+    background: var(--coral);
+    color: white;
+    border: none;
+    padding: 9px 20px;
+    border-radius: 30px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.2s;
+  }
+
+  .cart-btn:hover { background: #c9663e; transform: scale(1.04); }
+
+  /* ─── HERO ─── */
+  .hero {
+    background: linear-gradient(135deg, var(--verde) 0%, #3a6347 100%);
+    padding: 64px 32px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '🐾';
+    position: absolute;
+    font-size: 180px;
+    opacity: 0.06;
+    top: -30px;
+    left: -30px;
+    animation: flotar 6s ease-in-out infinite;
+  }
+
+  .hero::after {
+    content: '🐾';
+    position: absolute;
+    font-size: 140px;
+    opacity: 0.06;
+    bottom: -20px;
+    right: -10px;
+    animation: flotar 8s ease-in-out infinite reverse;
+  }
+
+  @keyframes flotar {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(10deg); }
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    color: white;
+    padding: 5px 16px;
+    border-radius: 30px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  .hero h1 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: white;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    max-width: 600px;
+    margin-inline: auto;
+  }
+
+  .hero h1 span { color: #FFD166; }
+
+  .hero p {
+    color: rgba(255,255,255,0.85);
+    font-size: 1.1rem;
+    max-width: 480px;
+    margin: 0 auto 32px;
+    line-height: 1.6;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--coral);
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    border-radius: 30px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 16px rgba(224,122,95,0.4);
+  }
+
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(224,122,95,0.5); }
+
+  .btn-secondary {
+    background: rgba(255,255,255,0.15);
+    color: white;
+    border: 2px solid rgba(255,255,255,0.5);
+    padding: 12px 28px;
+    border-radius: 30px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .btn-secondary:hover { background: rgba(255,255,255,0.25); }
+
+  /* ─── FILTROS DE ESPECIE ─── */
+  .filtros-especie {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    padding: 24px 32px 0;
+    flex-wrap: wrap;
+  }
+
+  .filtro-especie {
+    background: var(--blanco);
+    border: 2px solid var(--arena-oscura);
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--marron-suave);
+  }
+
+  .filtro-especie:hover,
+  .filtro-especie.activo {
+    background: var(--verde);
+    color: white;
+    border-color: var(--verde);
+  }
+
+  /* ─── SECCIÓN PRINCIPAL ─── */
+  .main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 24px 60px;
+  }
+
+  .section-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--marron);
+    margin-bottom: 6px;
+  }
+
+  .section-sub {
+    color: var(--gris);
+    font-size: 0.95rem;
+    margin-bottom: 24px;
+  }
+
+  /* ─── TABS PRODUCTOS / SERVICIOS ─── */
+  .tabs {
+    display: flex;
+    gap: 0;
+    background: var(--blanco);
+    border-radius: var(--radio);
+    padding: 6px;
+    width: fit-content;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 8px rgba(44,24,16,0.08);
+  }
+
+  .tab {
+    padding: 10px 28px;
+    border-radius: 12px;
+    border: none;
+    background: transparent;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    color: var(--gris);
+    transition: all 0.2s;
+  }
+
+  .tab.active {
+    background: var(--verde);
+    color: white;
+    box-shadow: 0 2px 8px rgba(74,124,89,0.3);
+  }
+
+  /* ─── GRID DE CARDS ─── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+  }
+
+  .card {
+    background: var(--blanco);
+    border-radius: var(--radio);
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(44,24,16,0.07);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(44,24,16,0.13);
+  }
+
+  .card-img {
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    position: relative;
+  }
+
+  .card-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: var(--arena);
+    color: var(--marron-suave);
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  .card-badge.servicio {
+    background: #EEF5F0;
+    color: var(--verde);
+  }
+
+  .card-talle {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--verde);
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  .card-body {
+    padding: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .card-especie {
+    font-size: 0.78rem;
+    color: var(--gris);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .card-nombre {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--marron);
+  }
+
+  .card-desc {
+    font-size: 0.85rem;
+    color: var(--gris);
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--arena-oscura);
+  }
+
+  .card-precio {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: var(--verde);
+  }
+
+  .card-stock {
+    font-size: 0.78rem;
+    color: var(--gris);
+  }
+
+  .btn-agregar {
+    background: var(--coral);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.2s;
+  }
+
+  .btn-agregar:hover { background: #c9663e; transform: scale(1.05); }
+
+  .btn-turno {
+    background: var(--verde);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.2s;
+  }
+
+  .btn-turno:hover { background: #3a6347; transform: scale(1.05); }
+
+  /* ─── INFO DURACION ─── */
+  .info-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 4px;
+  }
+
+  .info-chip {
+    background: #EEF5F0;
+    color: var(--verde);
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-family: 'Nunito', sans-serif;
+  }
+
+  .info-chip.coral {
+    background: #FFF0EC;
+    color: var(--coral);
+  }
+
+  /* ─── MODAL CARRITO ─── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(44,24,16,0.4);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--blanco);
+    border-radius: 24px;
+    padding: 32px;
+    max-width: 480px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 24px 64px rgba(44,24,16,0.2);
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  .modal-header h2 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 900;
+  }
+
+  .btn-cerrar {
+    background: var(--arena);
+    border: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+
+  .btn-cerrar:hover { background: var(--arena-oscura); }
+
+  .carrito-vacio {
+    text-align: center;
+    padding: 40px 0;
+    color: var(--gris);
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+  }
+
+  .carrito-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--arena-oscura);
+  }
+
+  .carrito-item-emoji { font-size: 2rem; }
+
+  .carrito-item-info { flex: 1; }
+
+  .carrito-item-nombre {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.95rem;
+  }
+
+  .carrito-item-precio {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    color: var(--verde);
+    font-size: 0.9rem;
+  }
+
+  .btn-eliminar {
+    background: none;
+    border: none;
+    color: var(--gris);
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 4px;
+    transition: color 0.2s;
+  }
+
+  .btn-eliminar:hover { color: var(--coral); }
+
+  .carrito-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 2px solid var(--arena-oscura);
+  }
+
+  .carrito-total span:first-child {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--gris);
+  }
+
+  .carrito-total-precio {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 1.4rem;
+    color: var(--marron);
+  }
+
+  .btn-comprar {
+    width: 100%;
+    background: var(--coral);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 14px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 1.05rem;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .btn-comprar:hover { background: #c9663e; transform: scale(1.01); }
+
+  /* ─── TOAST ─── */
+  .toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--marron);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    z-index: 999;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    white-space: nowrap;
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ─── STATS BAR ─── */
+  .stats-bar {
+    background: var(--blanco);
+    border-radius: var(--radio);
+    padding: 20px 28px;
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    margin-bottom: 32px;
+    box-shadow: 0 2px 8px rgba(44,24,16,0.06);
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--verde);
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--gris);
+    font-weight: 600;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 600px) {
+    nav { padding: 12px 16px; }
+    .hero h1 { font-size: 2rem; }
+    .main { padding: 20px 14px 60px; }
+    .filtros-especie { padding: 16px 14px 0; }
+    .grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .stats-bar { gap: 16px; padding: 16px; }
+  }
+
+  @media (max-width: 400px) {
+    .grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 1.7rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="logo">🐾 Pet<span>Match</span></div>
+  <ul class="nav-links">
+    <li><button class="active" onclick="setTab('productos')">Productos</button></li>
+    <li><button onclick="setTab('servicios')">Servicios</button></li>
+  </ul>
+  <button class="cart-btn" onclick="abrirCarrito()">🛒 Carrito <span id="cart-count">(0)</span></button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">🐶🐱🐰🐦 Para todas las mascotas</div>
+  <h1>Todo lo que tu mascota<br><span>merece, personalizado</span></h1>
+  <p>Productos con talle exacto y servicios profesionales, filtrados por especie. Porque cada mascota es única.</p>
+  <div class="hero-cta">
+    <button class="btn-primary" onclick="setTab('productos'); document.querySelector('.main').scrollIntoView({behavior:'smooth'})">Ver productos</button>
+    <button class="btn-secondary" onclick="setTab('servicios'); document.querySelector('.main').scrollIntoView({behavior:'smooth'})">Reservar servicio</button>
+  </div>
+</section>
+
+<!-- FILTROS ESPECIE -->
+<div class="filtros-especie" id="filtros-especie">
+  <button class="filtro-especie activo" onclick="filtrarEspecie('Todos', this)">🌟 Todos</button>
+  <button class="filtro-especie" onclick="filtrarEspecie('Perro', this)">🐶 Perros</button>
+  <button class="filtro-especie" onclick="filtrarEspecie('Gato', this)">🐱 Gatos</button>
+  <button class="filtro-especie" onclick="filtrarEspecie('Conejo', this)">🐰 Conejos</button>
+  <button class="filtro-especie" onclick="filtrarEspecie('Ave', this)">🐦 Aves</button>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-num">48</div><div class="stat-label">Productos</div></div>
+    <div class="stat"><div class="stat-num">12</div><div class="stat-label">Servicios</div></div>
+    <div class="stat"><div class="stat-num">4</div><div class="stat-label">Especies</div></div>
+    <div class="stat"><div class="stat-num">⭐ 4.9</div><div class="stat-label">Puntuación</div></div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" id="tab-productos" onclick="setTab('productos')">🛍️ Productos</button>
+    <button class="tab" id="tab-servicios" onclick="setTab('servicios')">✂️ Servicios</button>
+  </div>
+
+  <!-- SECCIÓN PRODUCTOS -->
+  <div id="seccion-productos">
+    <h2 class="section-title">Productos para tu mascota</h2>
+    <p class="section-sub">Filtrá por especie para ver solo lo que le sirve a tu compañero.</p>
+    <div class="grid" id="grid-productos"></div>
+  </div>
+
+  <!-- SECCIÓN SERVICIOS -->
+  <div id="seccion-servicios" style="display:none">
+    <h2 class="section-title">Servicios profesionales</h2>
+    <p class="section-sub">Turno online o disponible al instante. Profesionales verificados.</p>
+    <div class="grid" id="grid-servicios"></div>
+  </div>
+
+</main>
+
+<!-- MODAL CARRITO -->
+<div class="modal-overlay" id="modal-carrito" onclick="cerrarCarrito(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>🛒 Tu carrito</h2>
+      <button class="btn-cerrar" onclick="cerrarCarrito()">✕</button>
+    </div>
+    <div id="carrito-contenido">
+      <div class="carrito-vacio">Tu carrito está vacío 🐾<br><small>¡Agregá algo para tu mascota!</small></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── DATOS (REGISTROS) ───
+const productos = [
+  { idProducto: 1, nombre: "Collar Reflectante Ajustable", categoria: "Accesorio", especieMascota: "Perro", talle: "M", precio: 3200, stock: 15, descripcion: "Collar de nylon con cierre de seguridad y banda reflectante para paseos nocturnos.", emoji: "🦮" },
+  { idProducto: 2, nombre: "Alimento Balanceado Premium", categoria: "Alimento", especieMascota: "Perro", talle: "N/A", precio: 8500, stock: 30, descripcion: "Fórmula rica en proteínas para adultos medianos y grandes. Bolsa 3kg.", emoji: "🍖" },
+  { idProducto: 3, nombre: "Campera Polar Invierno", categoria: "Ropa", especieMascota: "Perro", talle: "S", precio: 5400, stock: 8, descripcion: "Campera abrigada con cierre ventral y capucha desmontable. Talle S (razas pequeñas).", emoji: "🧥" },
+  { idProducto: 4, nombre: "Rascador Torre Sisal", categoria: "Accesorio", especieMascota: "Gato", talle: "N/A", precio: 7200, stock: 5, descripcion: "Torre de sisal con plataformas y colgante para estimular el juego y el rascado.", emoji: "🐈" },
+  { idProducto: 5, nombre: "Arena Sanitaria Aglomerante", categoria: "Higiene", especieMascota: "Gato", talle: "N/A", precio: 2900, stock: 40, descripcion: "Arena de alta absorción con neutralizador de olores. Bolsa 4kg.", emoji: "🪣" },
+  { idProducto: 6, nombre: "Suéter Tejido Artesanal", categoria: "Ropa", especieMascota: "Gato", talle: "XS", precio: 4100, stock: 6, descripcion: "Suéter de lana merino sin costuras incómodas, ideal para gatos que toleran ropa.", emoji: "🧶" },
+  { idProducto: 7, nombre: "Comedero Cerámico Antideslizante", categoria: "Accesorio", especieMascota: "Conejo", talle: "N/A", precio: 1800, stock: 20, descripcion: "Comedero de cerámica pesada para que no se vuelque. Apto para alimento y agua.", emoji: "🥣" },
+  { idProducto: 8, nombre: "Heno Timothy Premium", categoria: "Alimento", especieMascota: "Conejo", talle: "N/A", precio: 1400, stock: 25, descripcion: "Heno de primera corte, alto en fibra. Esencial para la salud digestiva del conejo.", emoji: "🌾" },
+  { idProducto: 9, nombre: "Posa-pájaro con Espejo", categoria: "Accesorio", especieMascota: "Ave", talle: "N/A", precio: 2200, stock: 12, descripcion: "Posa-pájaro de madera natural con espejo y campana para estimulación cognitiva.", emoji: "🦜" },
+  { idProducto: 10, nombre: "Alpiste Silvestre Mix", categoria: "Alimento", especieMascota: "Ave", talle: "N/A", precio: 950, stock: 35, descripcion: "Mezcla de semillas naturales para aves pequeñas y medianas. 500g.", emoji: "🌻" },
+  { idProducto: 11, nombre: "Arnés Anti-tirones", categoria: "Accesorio", especieMascota: "Perro", talle: "L", precio: 4800, stock: 10, descripcion: "Arnés de paseo con doble enganche y material transpirable. Para perros grandes.", emoji: "🐕" },
+  { idProducto: 12, nombre: "Cepillo Deslanador", categoria: "Higiene", especieMascota: "Gato", talle: "N/A", precio: 2100, stock: 18, descripcion: "Cepillo de dientes de acero inoxidable para eliminar el pelo muerto y reducir las bolas de pelo.", emoji: "🪮" },
+];
+
+const servicios = [
+  { idServicio: 1, nombreServicio: "Baño y Corte Completo", tipoServicio: "Peluquería", especieMascota: "Perro", duracionMinutos: 90, precioBase: 6500, requiereTurno: true, disponible: true, emoji: "✂️" },
+  { idServicio: 2, nombreServicio: "Consulta Veterinaria General", tipoServicio: "Veterinaria", especieMascota: "Perro", duracionMinutos: 30, precioBase: 4200, requiereTurno: true, disponible: true, emoji: "🩺" },
+  { idServicio: 3, nombreServicio: "Adiestramiento Básico (4 clases)", tipoServicio: "Adiestramiento", especieMascota: "Perro", duracionMinutos: 60, precioBase: 12000, requiereTurno: true, disponible: true, emoji: "🎓" },
+  { idServicio: 4, nombreServicio: "Limpieza Dental Felina", tipoServicio: "Veterinaria", especieMascota: "Gato", duracionMinutos: 45, precioBase: 5800, requiereTurno: true, disponible: true, emoji: "🦷" },
+  { idServicio: 5, nombreServicio: "Corte de Uñas Express", tipoServicio: "Peluquería", especieMascota: "Gato", duracionMinutos: 20, precioBase: 1800, requiereTurno: false, disponible: true, emoji: "💅" },
+  { idServicio: 6, nombreServicio: "Control Veterinario Conejo", tipoServicio: "Veterinaria", especieMascota: "Conejo", duracionMinutos: 30, precioBase: 3900, requiereTurno: true, disponible: true, emoji: "🐰" },
+  { idServicio: 7, nombreServicio: "Revisión y Recorte de Alas", tipoServicio: "Veterinaria", especieMascota: "Ave", duracionMinutos: 25, precioBase: 2800, requiereTurno: true, disponible: false, emoji: "🦜" },
+  { idServicio: 8, nombreServicio: "Spa Relajante para Perros", tipoServicio: "Peluquería", especieMascota: "Perro", duracionMinutos: 120, precioBase: 9500, requiereTurno: true, disponible: true, emoji: "🛁" },
+];
+
+// ─── ESTADO ───
+let carrito = [];
+let especieActual = 'Todos';
+let tabActual = 'productos';
+
+// ─── RENDER PRODUCTOS ───
+function renderProductos() {
+  const grid = document.getElementById('grid-productos');
+  const filtrados = especieActual === 'Todos' ? productos : productos.filter(p => p.especieMascota === especieActual);
+  if (filtrados.length === 0) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--gris);font-family:Nunito,sans-serif;">No hay productos para esta especie aún 🐾</div>';
+    return;
+  }
+  grid.innerHTML = filtrados.map(p => `
+    <div class="card">
+      <div class="card-img" style="background:${colorBg(p.categoria)}">
+        ${p.talle !== 'N/A' ? <div class="card-talle">Talle ${p.talle}</div> : ''}
+        <div class="card-badge">${p.categoria}</div>
+        <span>${p.emoji}</span>
+      </div>
+      <div class="card-body">
+        <div class="card-especie">${p.especieMascota}</div>
+        <div class="card-nombre">${p.nombre}</div>
+        <div class="card-desc">${p.descripcion}</div>
+        <div class="card-footer">
+          <div>
+            <div class="card-precio">$${p.precio.toLocaleString('es-AR')}</div>
+            <div class="card-stock">${p.stock > 0 ? ✅ Stock: ${p.stock} : '❌ Sin stock'}</div>
+          </div>
+          <button class="btn-agregar" onclick="agregarAlCarrito('producto', ${p.idProducto})" ${p.stock === 0 ? 'disabled style="opacity:.5"' : ''}>+ Agregar</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ─── RENDER SERVICIOS ───
+function renderServicios() {
+  const grid = document.getElementById('grid-servicios');
+  const filtrados = especieActual === 'Todos' ? servicios : servicios.filter(s => s.especieMascota === especieActual);
+  if (filtrados.length === 0) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--gris);font-family:Nunito,sans-serif;">No hay servicios para esta especie aún 🐾</div>';
+    return;
+  }
+  grid.innerHTML = filtrados.map(s => `
+    <div class="card">
+      <div class="card-img" style="background:${colorServicio(s.tipoServicio)}">
+        <div class="card-badge servicio">${s.tipoServicio}</div>
+        <span>${s.emoji}</span>
+      </div>
+      <div class="card-body">
+        <div class="card-especie">${s.especieMascota}</div>
+        <div class="card-nombre">${s.nombreServicio}</div>
+        <div class="info-row">
+          <span class="info-chip">⏱️ ${s.duracionMinutos} min</span>
+          ${s.requiereTurno ? '<span class="info-chip coral">📅 Con turno</span>' : '<span class="info-chip">⚡ Inmediato</span>'}
+        </div>
+        <div class="card-footer">
+          <div>
+            <div class="card-precio">$${s.precioBase.toLocaleString('es-AR')}</div>
+            <div class="card-stock">${s.disponible ? '✅ Disponible' : '❌ No disponible'}</div>
+          </div>
+          <button class="btn-turno" onclick="agregarAlCarrito('servicio', ${s.idServicio})" ${!s.disponible ? 'disabled style="opacity:.5"' : ''}>${s.requiereTurno ? 'Reservar' : 'Contratar'}</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function colorBg(cat) {
+  const m = { 'Alimento':'#FFF8ED','Accesorio':'#EEF5F0','Ropa':'#FFF0EC','Higiene':'#EEF0FF' };
+  return m[cat] || '#F5EDD6';
+}
+
+function colorServicio(tipo) {
+  const m = { 'Peluquería':'#FFF0EC','Veterinaria':'#EEF5F0','Adiestramiento':'#EEF0FF' };
+  return m[tipo] || '#F5EDD6';
+}
+
+// ─── TABS ───
+function setTab(tab) {
+  tabActual = tab;
+  document.getElementById('seccion-productos').style.display = tab === 'productos' ? '' : 'none';
+  document.getElementById('seccion-servicios').style.display = tab === 'servicios' ? '' : 'none';
+  document.getElementById('tab-productos').classList.toggle('active', tab === 'productos');
+  document.getElementById('tab-servicios').classList.toggle('active', tab === 'servicios');
+  document.querySelectorAll('.nav-links button').forEach((b, i) => {
+    b.classList.toggle('active', (i === 0 && tab === 'productos') || (i === 1 && tab === 'servicios'));
+  });
+}
+
+// ─── FILTRO ESPECIE ───
+function filtrarEspecie(especie, btn) {
+  especieActual = especie;
+  document.querySelectorAll('.filtro-especie').forEach(b => b.classList.remove('activo'));
+  btn.classList.add('activo');
+  renderProductos();
+  renderServicios();
+}
+
+// ─── CARRITO ───
+function agregarAlCarrito(tipo, id) {
+  let item;
+  if (tipo === 'producto') {
+    const p = productos.find(x => x.idProducto === id);
+    item = { id: 'p'+id, nombre: p.nombre, precio: p.precio, emoji: p.emoji };
+  } else {
+    const s = servicios.find(x => x.idServicio === id);
+    item = { id: 's'+id, nombre: s.nombreServicio, precio: s.precioBase, emoji: s.emoji };
+  }
+  carrito.push(item);
+  actualizarContadorCarrito();
+  mostrarToast(${item.emoji} ${item.nombre} agregado);
+}
+
+function actualizarContadorCarrito() {
+  document.getElementById('cart-count').textContent = (${carrito.length});
+}
+
+function abrirCarrito() {
+  const modal = document.getElementById('modal-carrito');
+  modal.classList.add('open');
+  renderCarrito();
+}
+
+function cerrarCarrito(e) {
+  if (!e || e.target === document.getElementById('modal-carrito')) {
+    document.getElementById('modal-carrito').classList.remove('open');
+  }
+}
+
+function renderCarrito() {
+  const cont = document.getElementById('carrito-contenido');
+  if (carrito.length === 0) {
+    cont.innerHTML = '<div class="carrito-vacio">Tu carrito está vacío 🐾<br><small>¡Agregá algo para tu mascota!</small></div>';
+    return;
+  }
+  const total = carrito.reduce((acc, i) => acc + i.precio, 0);
+  cont.innerHTML = `
+    ${carrito.map((item, idx) => `
+      <div class="carrito-item">
+        <span class="carrito-item-emoji">${item.emoji}</span>
+        <div class="carrito-item-info">
+          <div class="carrito-item-nombre">${item.nombre}</div>
+          <div class="carrito-item-precio">$${item.precio.toLocaleString('es-AR')}</div>
+        </div>
+        <button class="btn-eliminar" onclick="eliminarItem(${idx})">✕</button>
+      </div>
+    `).join('')}
+    <div class="carrito-total">
+      <span>Total</span>
+      <span class="carrito-total-precio">$${total.toLocaleString('es-AR')}</span>
+    </div>
+    <button class="btn-comprar" onclick="confirmarCompra()">Confirmar compra</button>
+  `;
+}
+
+function eliminarItem(idx) {
+  carrito.splice(idx, 1);
+  actualizarContadorCarrito();
+  renderCarrito();
+}
+
+function confirmarCompra() {
+  carrito = [];
+  actualizarContadorCarrito();
+  cerrarCarrito();
+  mostrarToast('✅ ¡Compra confirmada! Gracias por elegir PetMatch 🐾');
+}
+
+// ─── TOAST ───
+function mostrarToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ─── INIT ───
+renderProductos();
+renderServicios();
+</script>
+</body>
+</html>
